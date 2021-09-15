@@ -18,6 +18,7 @@ namespace R5T.T0045.X0001
         public static IDocumentationLine DocumentationLine { get; } = T0036.DocumentationLine.Instance;
         public static IIndentation Indentation { get; } = T0036.Indentation.Instance;
         public static IInterfaceGenerator InterfaceGenerator { get; } = T0045.InterfaceGenerator.Instance;
+        public static IInterfaceName InterfaceName { get; } = T0036.InterfaceName.Instance;
         public static IMethodGenerator MethodGenerator { get; } = T0045.MethodGenerator.Instance;
         public static INamespacedTypeName NamespacedTypeName { get; } = T0034.NamespacedTypeName.Instance;
         public static INamespaceName NamespaceName { get; } = T0035.NamespaceName.Instance;

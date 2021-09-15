@@ -12,7 +12,8 @@ namespace System
 {
     public static class IClassGeneratorExtensions
     {
-        public static ClassDeclarationSyntax GetT0027_T009Startup(this IClassGenerator _)
+        public static ClassDeclarationSyntax GetT0027_T009Startup(this IClassGenerator _,
+            string codeBodyNamespaceName)
         {
             var constructor = Instances.MethodGenerator.GetT0027_T009StartupConstructor();
 
@@ -24,17 +25,28 @@ namespace System
                 .Indent(Instances.Indentation.Method())
                 ;
 
+            var baseStartupNamespacedTypeName = Instances.NamespacedTypeName.Startup_R5T_T0027_T009();
+            var baseClassRelativeNamespacedTypeName = Instances.NamespacedTypeName.GetRelativeNamespacedTypeName(
+                baseStartupNamespacedTypeName,
+                codeBodyNamespaceName);
+
             var output = _.GetPrivateClass(
                 Instances.ClassName.Startup(),
-                Instances.NamespacedTypeName.GetNamespacedName(
-                    Instances.NamespaceName.Values().R5T_T0027_T009(),
-                    Instances.ClassName.Startup()))
+                baseClassRelativeNamespacedTypeName)
                 .AddMembers(
                     constructor,
                     configureConfiguration,
                     configureServices)
                 ;
 
+            return output;
+        }
+
+        public static ClassDeclarationSyntax GetT0027_T009Startup(this IClassGenerator _)
+        {
+            var defaultNamespaceName = Instances.NamespaceName.Values()._Default();
+
+            var output = _.GetT0027_T009Startup(defaultNamespaceName);
             return output;
         }
 
@@ -84,7 +96,7 @@ namespace System
             return output;
         }
 
-        public static ClassDeclarationSyntax GetDocumentationClass(this IClassGenerator _,
+        public static ClassDeclarationSyntax GetDocumentation(this IClassGenerator _,
             string descriptionLine)
         {
             var documentationComment = Instances.DocumentationGenerator.GetClassDocumentationComment(descriptionLine);
@@ -121,7 +133,7 @@ namespace System
             return output;
         }
 
-        public static ClassDeclarationSyntax GetExtensionMethodBaseClass(this IClassGenerator _,
+        public static ClassDeclarationSyntax GetExtensionMethodBase(this IClassGenerator _,
             string extensionMethodBaseClassTypeName,
             string extensionMethodBaseInterfaceTypeName)
         {
@@ -137,6 +149,40 @@ namespace System
                 ;
 
             return output;
+        }
+
+        public static ClassDeclarationSyntax GetServiceAggregationStub(this IClassGenerator _,
+            string iServiceAggregationRelativeNamespacedTypeName)
+        {
+            var output = _.GetPublicClass(
+                Instances.ClassName.ServiceAggregation(),
+                iServiceAggregationRelativeNamespacedTypeName);
+
+            return output;
+        }
+
+        public static ClassDeclarationSyntax GetIServiceAggregationExtensionsClassStub(this IClassGenerator _,
+            string iServiceAggregationIncrementInterfaceTypeName)
+        {
+            var fillFromMethod = Instances.MethodGenerator.GetFillFromMethod(iServiceAggregationIncrementInterfaceTypeName);
+
+            var iServiceAggregationIncrementExtensionsClass = _.GetPublicStaticClass(Instances.ClassName.IServiceAggregationExtensions())
+                .AddMembers(fillFromMethod)
+                ;
+
+            return iServiceAggregationIncrementExtensionsClass;
+        }
+
+        public static ClassDeclarationSyntax GetIServiceAggregationIncrementExtensionsClassStub(this IClassGenerator _,
+            string iServiceAggregationIncrementInterfaceTypeName)
+        {
+            var fillFromMethod = Instances.MethodGenerator.GetFillFromMethod(iServiceAggregationIncrementInterfaceTypeName);
+
+            var iServiceAggregationIncrementExtensionsClass = _.GetPublicStaticClass(Instances.ClassName.IServiceAggregationIncrementExtensions())
+                .AddMembers(fillFromMethod)
+                ;
+
+            return iServiceAggregationIncrementExtensionsClass;
         }
     }
 }

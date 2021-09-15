@@ -11,6 +11,24 @@ namespace System
 {
     public static class IMethodGeneratorExtensions
     {
+        public static MethodDeclarationSyntax GetFillFromMethod(this IMethodGenerator _,
+            string serviceAggregationInterfaceTypeName)
+        {
+            var text = $@"
+public static T FillFrom<T>(this T aggregation,
+    {serviceAggregationInterfaceTypeName} other)
+    where T : {serviceAggregationInterfaceTypeName}
+{{
+
+}}
+";
+            var output = _.GetMethodDeclarationFromText(text)
+                .IndentBlock(Instances.Indentation.Method())
+                ;
+
+            return output;
+        }
+
         public static MethodDeclarationSyntax GetT0027_T009ConfigureServicesWithProvidedServices(this IMethodGenerator _)
         {
             var text = @"

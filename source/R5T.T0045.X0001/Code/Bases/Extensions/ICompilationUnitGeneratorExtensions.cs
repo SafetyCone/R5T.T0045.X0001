@@ -27,7 +27,7 @@ namespace System
                         namespaceNameValues.R5T_Dacia(),
                         namespaceNameValues.R5T_T0027_T008());
 
-                    var startupClass = Instances.ClassGenerator.GetT0027_T009Startup();
+                    var startupClass = Instances.ClassGenerator.GetT0027_T009Startup(namespaceName);
 
                     var outputNamespace = xNamespace.AddClass(startupClass);
                     return outputNamespace;
@@ -68,7 +68,7 @@ namespace System
                 namespaceName,
                 (xNamespace, xNamespaceNames) =>
                 {
-                    var defaultProgramClass = Instances.ClassGenerator.GetDocumentationClass(documentationLine);
+                    var defaultProgramClass = Instances.ClassGenerator.GetDocumentation(documentationLine);
 
                     var outputNamespace = xNamespace.AddClass(defaultProgramClass);
                     return outputNamespace;
@@ -119,6 +119,127 @@ namespace System
                         namespaceNames);
 
                     var namespaceOutput = @namespace.AddClass(serviceImplementationClass);
+                    return namespaceOutput;
+                });
+
+            return output;
+        }
+
+        public static CompilationUnitSyntax GetServiceAggregationClassStub(this ICompilationUnitGenerator _,
+            string namespaceName,
+            string iServiceAggregationInterfaceNamespacedTypeName)
+        {
+            var output = Instances.CompilationUnitGenerator.InNewNamespace(
+                namespaceName,
+                (@namespace, namespaceNames) =>
+                {
+                    namespaceNames.AddRange(
+                        Instances.NamespaceName.Values().R5T_Dacia());
+
+                    namespaceNames.AddNamespacedTypeName(
+                        namespaceName,
+                        iServiceAggregationInterfaceNamespacedTypeName);
+
+                    var iServiceAggregationRelativeNamespacedTypeName = Instances.NamespacedTypeName.GetRelativeNamespacedTypeNameOld(
+                        iServiceAggregationInterfaceNamespacedTypeName,
+                        namespaceName);
+
+                    var iServiceAggregationStubInterface = Instances.ClassGenerator.GetServiceAggregationStub(
+                        iServiceAggregationRelativeNamespacedTypeName);
+
+                    var namespaceOutput = @namespace.AddClass(iServiceAggregationStubInterface);
+                    return namespaceOutput;
+                });
+
+            return output;
+        }
+
+        public static CompilationUnitSyntax GetIServiceAggregationInterfaceStub(this ICompilationUnitGenerator _,
+            string namespaceName,
+            string iServiceAggregationIncrementNamespacedTypeName)
+        {
+            var output = Instances.CompilationUnitGenerator.InNewNamespace(
+                namespaceName,
+                (@namespace, namespaceNames) =>
+                {
+                    namespaceNames.AddRange(
+                        Instances.NamespaceName.Values().R5T_Dacia());
+
+                    namespaceNames.AddNamespacedTypeName(
+                        namespaceName,
+                        iServiceAggregationIncrementNamespacedTypeName);
+
+                    var iServiceAggregationIncrementRelativeNamespacedTypeName = Instances.NamespacedTypeName.GetRelativeNamespacedTypeNameOld(
+                        iServiceAggregationIncrementNamespacedTypeName,
+                        namespaceName);
+
+                    var iServiceAggregationStubInterface = Instances.InterfaceGenerator.GetIServiceAggregationStub(
+                        iServiceAggregationIncrementRelativeNamespacedTypeName);
+
+                    var namespaceOutput = @namespace.AddInterface(iServiceAggregationStubInterface);
+                    return namespaceOutput;
+                });
+
+            return output;
+        }
+
+        public static CompilationUnitSyntax GetIServiceAggregationExtensionsStub(this ICompilationUnitGenerator _,
+            string iServiceAggregationInterfaceNamespacedTypeName)
+        {
+            var output = Instances.CompilationUnitGenerator.InNewNamespace(
+                Instances.NamespaceName.Values().System(), // Use the System namespace for these extensions.
+                (@namespace, namespaceNames) =>
+                {
+                    var iServiceAggregationInterfaceNamespaceName = Instances.NamespacedTypeName.GetNamespaceName(iServiceAggregationInterfaceNamespacedTypeName);
+                    var iServiceAggregationInterfaceTypeName = Instances.NamespacedTypeName.GetTypeName(iServiceAggregationInterfaceNamespacedTypeName);
+
+                    namespaceNames.AddRange(iServiceAggregationInterfaceNamespaceName);
+
+                    var iServiceAggregationExtensionsStubClass = Instances.ClassGenerator.GetIServiceAggregationExtensionsClassStub(
+                        iServiceAggregationInterfaceTypeName);
+
+                    var namespaceOutput = @namespace.AddClass(iServiceAggregationExtensionsStubClass);
+                    return namespaceOutput;
+                });
+
+            return output;
+        }
+
+        public static CompilationUnitSyntax GetIServiceAggregationIncrementExtensionsStub(this ICompilationUnitGenerator _,
+            string iServiceAggregationIncrementInterfaceNamespacedTypeName)
+        {
+            var output = Instances.CompilationUnitGenerator.InNewNamespace(
+                Instances.NamespaceName.Values().System(), // Use the System namespace for these extensions.
+                (@namespace, namespaceNames) =>
+                {
+                    var iServiceAggregationIncrementInterfaceNamespaceName = Instances.NamespacedTypeName.GetNamespaceName(iServiceAggregationIncrementInterfaceNamespacedTypeName);
+                    var iServiceAggregationIncrementInterfaceTypeName = Instances.NamespacedTypeName.GetTypeName(iServiceAggregationIncrementInterfaceNamespacedTypeName);
+
+                    namespaceNames.AddRange(iServiceAggregationIncrementInterfaceNamespaceName);
+
+                    var iServiceAggregationIncrementExtensionsStubClass = Instances.ClassGenerator.GetIServiceAggregationIncrementExtensionsClassStub(
+                        iServiceAggregationIncrementInterfaceTypeName);
+
+                    var namespaceOutput = @namespace.AddClass(iServiceAggregationIncrementExtensionsStubClass);
+                    return namespaceOutput;
+                });
+
+            return output;
+        }
+
+        public static CompilationUnitSyntax GetIServiceAggregationIncrementStub(this ICompilationUnitGenerator _,
+            string namespaceName)
+        {
+            var output = Instances.CompilationUnitGenerator.InNewNamespace(
+                namespaceName,
+                (@namespace, namespaceNames) =>
+                {
+                    namespaceNames.AddRange(
+                        Instances.NamespaceName.Values().R5T_Dacia());
+
+                    var iServiceAggregationIncrementStubInterface = Instances.InterfaceGenerator.GetIServiceAggregationIncrementStub();
+
+                    var namespaceOutput = @namespace.AddInterface(iServiceAggregationIncrementStubInterface);
                     return namespaceOutput;
                 });
 
@@ -185,7 +306,7 @@ namespace System
                         namespaceNames.Add(interfaceNamespaceName);
                     }
 
-                    var extensionMethodBaseInterface = Instances.ClassGenerator.GetExtensionMethodBaseClass(
+                    var extensionMethodBaseInterface = Instances.ClassGenerator.GetExtensionMethodBase(
                         implementationTypeName,
                         interfaceTypeName);
 

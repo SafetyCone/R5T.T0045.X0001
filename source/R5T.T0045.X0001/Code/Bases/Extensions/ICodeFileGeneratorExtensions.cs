@@ -76,6 +76,40 @@ namespace System
             serviceDefinitionInterfaceCompilationUnit.WriteTo(filePath);
         }
 
+        public static void CreateIServiceAggregationStub(this ICodeFileGenerator _,
+            string filePath,
+            string namespaceName,
+            string iServiceAggregationIncrementInterfaceNamespacedTypeName)
+        {
+            var iServiceAggregationStubCompilationUnit = Instances.CompilationUnitGenerator.GetIServiceAggregationInterfaceStub(
+                namespaceName,
+                iServiceAggregationIncrementInterfaceNamespacedTypeName);
+
+            iServiceAggregationStubCompilationUnit.WriteTo(filePath);
+        }
+
+        public static void CreateIServiceAggregationStub(this ICodeFileGenerator _,
+            string filePath,
+            string namespaceName)
+        {
+            var iServiceAggregationIncrementInterfaceNamespacedTypeName = Instances.NamespacedTypeName.IServicesAggregationIncrement(namespaceName);
+
+            _.CreateIServiceAggregationStub(
+                filePath,
+                namespaceName,
+                iServiceAggregationIncrementInterfaceNamespacedTypeName);
+        }
+
+        public static void CreateIServiceAggregationIncrementStub(this ICodeFileGenerator _,
+            string filePath,
+            string namespaceName)
+        {
+            var iServiceAggregationIncrementStubCompilationUnit = Instances.CompilationUnitGenerator.GetIServiceAggregationIncrementStub(
+                namespaceName);
+
+            iServiceAggregationIncrementStubCompilationUnit.WriteTo(filePath);
+        }
+
         public static void CreateIServiceCollectionExtensionsStub(this ICodeFileGenerator _,
             string filePath,
             string serviceImplementationsNamespaceName)
@@ -94,6 +128,50 @@ namespace System
                 extensionMethodBaseInterfaceNamespacedTypeName);
 
             baseExtensionMethodBaseCompilationUnit.WriteTo(filePath);
+        }
+
+        public static void CreateIServiceAggregationExtensionsClassStub(this ICodeFileGenerator _,
+            string filePath,
+            string iServiceAggregationInterfaceNamespacedTypeName)
+        {
+            var iServiceAggregationExtensionsStubCompilationUnit = Instances.CompilationUnitGenerator.GetIServiceAggregationExtensionsStub(
+                iServiceAggregationInterfaceNamespacedTypeName);
+
+            iServiceAggregationExtensionsStubCompilationUnit.WriteTo(filePath);
+        }
+
+        public static void CreateIServiceAggregationIncrementExtensionsClassStub(this ICodeFileGenerator _,
+            string filePath,
+            string iServiceAggregationIncrementInterfaceNamespacedTypeName)
+        {
+            var iServiceAggregationIncrementExtensionsStubCompilationUnit = Instances.CompilationUnitGenerator.GetIServiceAggregationIncrementExtensionsStub(
+                iServiceAggregationIncrementInterfaceNamespacedTypeName);
+
+            iServiceAggregationIncrementExtensionsStubCompilationUnit.WriteTo(filePath);
+        }
+
+        public static void CreateServiceAggregationClassStub(this ICodeFileGenerator _,
+            string filePath,
+            string namespaceName,
+            string iServiceAggregationInterfaceNamespacedTypeName)
+        {
+            var serviceAggregationClassCompilationUnit = Instances.CompilationUnitGenerator.GetServiceAggregationClassStub(
+                namespaceName,
+                iServiceAggregationInterfaceNamespacedTypeName);
+
+            serviceAggregationClassCompilationUnit.WriteTo(filePath);
+        }
+
+        public static void CreateServiceAggregationClassStub(this ICodeFileGenerator _,
+            string filePath,
+            string namespaceName)
+        {
+            var iServiceAggregationInterfaceNamespacedTypeName = Instances.NamespacedTypeName.IServiceAggregation(namespaceName);
+
+            _.CreateServiceAggregationClassStub(
+                filePath,
+                namespaceName,
+                iServiceAggregationInterfaceNamespacedTypeName);
         }
 
         public static void CreateExtensionMethodBaseClass(this ICodeFileGenerator _,

@@ -12,17 +12,6 @@ namespace System
 {
     public static class IInterfaceGeneratorExtensions
     {
-        public static InterfaceDeclarationSyntax GetServiceDefinition(this IInterfaceGenerator _,
-            string serviceDefinitionInterfaceTypeName,
-            NamespaceNameSet namespaceNames)
-        {
-            var output = _.GetPublicInterface(serviceDefinitionInterfaceTypeName)
-                .AddServiceDefinitionMarkerAttribute(namespaceNames)
-                ;
-
-            return output;
-        }
-
         public static InterfaceDeclarationSyntax GetExtensionMethodBase(this IInterfaceGenerator _,
             string extensionMethodBaseClassTypeName,
             NamespaceNameSet namespaceNames)
@@ -30,6 +19,38 @@ namespace System
             var output = _.GetPublicInterface(extensionMethodBaseClassTypeName)
                 .AddExtensionMethodBaseMarkerAttribute(namespaceNames)
                 .AddDocumentation(Instances.DocumentationLine.EmptyExtensionsBaseInterface())
+                ;
+
+            return output;
+        }
+
+        public static InterfaceDeclarationSyntax GetIServiceAggregationStub(this IInterfaceGenerator _,
+            string iServiceAggregationIncrementBaseTypeExpression)
+        {
+            var text = $@"
+public interface {Instances.InterfaceName.IServiceAggregation()} :
+    {iServiceAggregationIncrementBaseTypeExpression}
+";
+
+            var output = _.GetInterfaceFromTextWithNewLineIndentationOnly(text)
+                .IndentBlock(Instances.Indentation.Interface())
+                ;
+
+            return output;
+        }
+
+        public static InterfaceDeclarationSyntax GetIServiceAggregationIncrementStub(this IInterfaceGenerator _)
+        {
+            var output = _.GetPublicInterface(Instances.InterfaceName.IServiceAggregationIncrement());
+            return output;
+        }
+
+        public static InterfaceDeclarationSyntax GetServiceDefinition(this IInterfaceGenerator _,
+            string serviceDefinitionInterfaceTypeName,
+            NamespaceNameSet namespaceNames)
+        {
+            var output = _.GetPublicInterface(serviceDefinitionInterfaceTypeName)
+                .AddServiceDefinitionMarkerAttribute(namespaceNames)
                 ;
 
             return output;
