@@ -140,6 +140,7 @@ namespace System
             var propertyIndentation = Instances.Indentation.Property();
 
             var instanceStaticProperty = Instances.PropertyGenerator.GetExtensionMethodBaseStaticInstance(extensionMethodBaseClassTypeName)
+                .Indent(propertyIndentation)
                 .WrapWithRegion(Instances.RegionName.Static(), propertyIndentation)
                 ;
 

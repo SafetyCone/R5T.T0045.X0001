@@ -110,8 +110,11 @@ namespace System
                 (@namespace, namespaceNames) =>
                 {
                     namespaceNames.AddRange(
-                        Instances.NamespaceName.System().Threading().Tasks().Value(),
-                        definitionNamespaceName);
+                        Instances.NamespaceName.Values().System_Threading_Tasks());
+
+                    namespaceNames.AddNamespacedTypeName(
+                        implementationNamespaceName,
+                        serviceDefinitionNamespacedTypeName);
 
                     var serviceImplementationClass = Instances.ClassGenerator.GetServiceImplementation(
                         serviceImplementationNamespacedTypeName,
@@ -306,11 +309,11 @@ namespace System
                         namespaceNames.Add(interfaceNamespaceName);
                     }
 
-                    var extensionMethodBaseInterface = Instances.ClassGenerator.GetExtensionMethodBase(
+                    var extensionMethodBaseClass = Instances.ClassGenerator.GetExtensionMethodBase(
                         implementationTypeName,
                         interfaceTypeName);
 
-                    var namespaceOutput = @namespace.AddClass(extensionMethodBaseInterface);
+                    var namespaceOutput = @namespace.AddClass(extensionMethodBaseClass);
                     return namespaceOutput;
                 });
 
