@@ -11,6 +11,24 @@ namespace System
 {
     public static class ICompilationUnitGeneratorExtensions
     {
+        public static CompilationUnitSyntax CreateInstances(this ICompilationUnitGenerator _,
+            string namespaceName)
+        {
+            var output = _.InNewNamespace(
+                namespaceName,
+                (xNamespace, xNamespaceNames) =>
+                {
+                    // System namespace already added.
+
+                    var instancesClass = Instances.ClassGenerator.CreateInstances();
+
+                    var outputNamespace = xNamespace.AddClass(instancesClass);
+                    return outputNamespace;
+                });
+
+            return output;
+        }
+
         public static CompilationUnitSyntax GetT0027_T009Startup(this ICompilationUnitGenerator _,
             string namespaceName)
         {

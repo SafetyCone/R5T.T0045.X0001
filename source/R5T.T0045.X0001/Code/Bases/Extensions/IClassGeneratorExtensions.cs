@@ -12,6 +12,12 @@ namespace System
 {
     public static class IClassGeneratorExtensions
     {
+        public static ClassDeclarationSyntax CreateInstances(this IClassGenerator _)
+        {
+            var output = _.GetPublicStaticClass(Instances.ClassName.Instances());
+            return output;
+        }
+
         public static ClassDeclarationSyntax GetT0027_T009Startup(this IClassGenerator _,
             string codeBodyNamespaceName)
         {
