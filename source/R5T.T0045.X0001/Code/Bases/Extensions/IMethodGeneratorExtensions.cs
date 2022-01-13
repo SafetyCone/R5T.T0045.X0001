@@ -95,7 +95,7 @@ public Startup(ILogger<Startup> logger)
             return output;
         }
 
-        public static MethodDeclarationSyntax GetProgramAsAServiceRunMethod(this IMethodGenerator _)
+        public static MethodDeclarationSyntax GetProgramAsAServiceRunMethodMethod(this IMethodGenerator _)
         {
             var text = @"
 private async Task RunMethod()
@@ -110,7 +110,7 @@ private async Task RunMethod()
             return output;
         }
 
-        public static MethodDeclarationSyntax GetProgramAsAServiceRunOperation(this IMethodGenerator _)
+        public static MethodDeclarationSyntax GetProgramAsAServiceRunOperationMethod(this IMethodGenerator _)
         {
             var text = @"
 private async Task RunOperation()
@@ -143,6 +143,21 @@ protected override Task ServiceMain(CancellationToken stoppingToken)
         public static ConstructorDeclarationSyntax GetProgramAsAServiceProgramConstructor(this IMethodGenerator _)
         {
             var text = @"
+public Program(IServiceProvider serviceProvider)
+    : base(serviceProvider)
+{
+}
+";
+            var output = _.GetConstructorDeclarationFromText(text)
+                .IndentBlock(Instances.Indentation.Method())
+                ;
+
+            return output;
+        }
+
+        public static ConstructorDeclarationSyntax GetProgramAsAServiceProgramConstructor_Old(this IMethodGenerator _)
+        {
+            var text = @"
 public Program(IApplicationLifetime applicationLifetime,
     IServiceProvider serviceProvider)
     : base(applicationLifetime)
@@ -157,7 +172,7 @@ public Program(IApplicationLifetime applicationLifetime,
             return output;
         }
 
-        public static MethodDeclarationSyntax GetProgramAsAServiceMain(this IMethodGenerator _)
+        public static MethodDeclarationSyntax GetProgramAsAServiceMain_Old(this IMethodGenerator _)
         {
             var text = @"
 static Task Main()
@@ -168,6 +183,30 @@ static Task Main()
         .UseT0027_T009_TwoStageStartup<Startup>()
         .BuildProgramAsAServiceHost()
         .Run();
+}
+";
+            var output = _.GetMethodDeclarationFromText(text)
+                .IndentBlock(Instances.Indentation.Method())
+                ;
+
+            return output;
+        }
+
+        public static MethodDeclarationSyntax GetProgramAsAServiceMain(this IMethodGenerator _)
+        {
+            var text = @"
+static Task Main()
+{
+    //OverridableProcessStartTimeProvider.Override(""20211214 - 163052"");
+    //OverridableProcessStartTimeProvider.DoNotOverride();
+
+    await Instances.Host.NewBuilder()
+        .UseProgramAsAService<Program, T0075.IHostBuilder>()
+        .UseHostStartup<HostStartup, T0075.IHostBuilder>(Instances.ServiceAction.AddHostStartupAction())
+        .Build()
+        .SerializeConfigurationAudit()
+        .SerializeServiceCollectionAudit()
+        .RunAsync();
 }
 ";
             var output = _.GetMethodDeclarationFromText(text)

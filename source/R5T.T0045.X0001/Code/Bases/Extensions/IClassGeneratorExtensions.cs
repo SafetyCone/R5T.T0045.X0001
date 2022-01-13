@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -12,9 +14,24 @@ namespace System
 {
     public static class IClassGeneratorExtensions
     {
-        public static ClassDeclarationSyntax CreateInstances(this IClassGenerator _)
+        public static ClassDeclarationSyntax CreateInstances(this IClassGenerator _,
+            IEnumerable<(string ExtensionMethodBaseInterfaceTypeName, string PropertyName, string InitializationExpression)> instanceTuples = default)
         {
-            var output = _.GetPublicStaticClass(Instances.ClassName.Instances());
+            var properties = instanceTuples is object
+                ? instanceTuples
+                    .OrderAlphabetically(xTuple => xTuple.ExtensionMethodBaseInterfaceTypeName)
+                    .Select(xTuple => Instances.PropertyGenerator.GetInstancesInstanceProperty(
+                        xTuple.ExtensionMethodBaseInterfaceTypeName,
+                        xTuple.PropertyName,
+                        xTuple.InitializationExpression))
+                    .Now()
+                : Array.Empty<PropertyDeclarationSyntax>()
+                ;
+
+            var output = _.GetPublicStaticClass(Instances.ClassName.Instances())
+                .AddMembers(properties)
+                ;
+
             return output;
         }
 
@@ -64,12 +81,6 @@ namespace System
                     Instances.Indentation.Method())
                 ;
 
-            var serviceProviderProperty = Instances.PropertyGenerator.GetPrivateServiceProvider()
-                .Indent(Instances.Indentation.Property())
-                .Indent(Instances.Indentation.Property())
-                .Indent(Instances.Indentation.Property())
-                ;
-
             var constructor = Instances.MethodGenerator.GetProgramAsAServiceProgramConstructor()
                 .Indent(Instances.Indentation.Method())
                 .Indent(Instances.Indentation.Method())
@@ -79,17 +90,62 @@ namespace System
                 .Indent(Instances.Indentation.Method())
                 ;
 
-            var runOperation = Instances.MethodGenerator.GetProgramAsAServiceRunOperation()
+            var runOperation = Instances.MethodGenerator.GetProgramAsAServiceRunOperationMethod()
                 .Indent(Instances.Indentation.Method())
                 ;
 
-            var runMethod = Instances.MethodGenerator.GetProgramAsAServiceRunMethod()
+            var runMethod = Instances.MethodGenerator.GetProgramAsAServiceRunMethodMethod()
                 .Indent(Instances.Indentation.Method())
                 ;
 
             var output = _.GetPrivateClass(
                 Instances.ClassName.Program(),
-                Instances.TypeName.ProgramAsAService())
+                Instances.TypeName.ProgramAsAServiceBase())
+                .AddMethod(mainMethodInMainRegion)
+                .AddMembers(
+                    constructor,
+                    serviceMain,
+                    runOperation,
+                    runMethod)
+                ;
+
+            return output;
+        }
+
+        public static ClassDeclarationSyntax GetProgramAsAServiceProgram_Old(this IClassGenerator _)
+        {
+            var mainMethodInMainRegion = Instances.MethodGenerator.GetProgramAsAServiceMain_Old()
+                .WrapWithRegion(
+                    Instances.RegionName.Static(),
+                    Instances.Indentation.Method())
+                ;
+
+            var serviceProviderProperty = Instances.PropertyGenerator.GetPrivateServiceProvider()
+                .Indent(Instances.Indentation.Property())
+                .Indent(Instances.Indentation.Property())
+                .Indent(Instances.Indentation.Property())
+                ;
+
+            var constructor = Instances.MethodGenerator.GetProgramAsAServiceProgramConstructor_Old()
+                .Indent(Instances.Indentation.Method())
+                .Indent(Instances.Indentation.Method())
+                ;
+
+            var serviceMain = Instances.MethodGenerator.GetProgramAsAServiceServiceMain()
+                .Indent(Instances.Indentation.Method())
+                ;
+
+            var runOperation = Instances.MethodGenerator.GetProgramAsAServiceRunOperationMethod()
+                .Indent(Instances.Indentation.Method())
+                ;
+
+            var runMethod = Instances.MethodGenerator.GetProgramAsAServiceRunMethodMethod()
+                .Indent(Instances.Indentation.Method())
+                ;
+
+            var output = _.GetPrivateClass(
+                Instances.ClassName.Program(),
+                Instances.TypeName.ProgramAsAServiceBase())
                 .AddMethod(mainMethodInMainRegion)
                 .AddMembers(
                     serviceProviderProperty,

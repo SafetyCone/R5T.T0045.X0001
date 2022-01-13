@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -12,15 +14,50 @@ namespace System
     public static class ICompilationUnitGeneratorExtensions
     {
         public static CompilationUnitSyntax CreateInstances(this ICompilationUnitGenerator _,
-            string namespaceName)
+            string namespaceName,
+            IEnumerable<string> extensionMethodBaseInterfaceNamespacedTypeNames = default)
         {
+            var distinctExtensionMethodBaseInterfaceNamespacedTypeNames = extensionMethodBaseInterfaceNamespacedTypeNames
+                .Distinct()
+                ;
+
+            // Get namespaces.
+            var extensionMethodBaseNamespaceNames = distinctExtensionMethodBaseInterfaceNamespacedTypeNames
+                .Select(x => Instances.NamespacedTypeName.GetNamespaceName(x))
+                .OrderAlphabetically()
+                .Now();
+
+            // Compute instance tuples.
+            var instanceTuples = distinctExtensionMethodBaseInterfaceNamespacedTypeNames
+                .Select(x =>
+                {
+                    var namespaceName = Instances.NamespacedTypeName.GetNamespaceName(x);
+                    var interfaceTypeName = Instances.NamespacedTypeName.GetTypeName(x);
+                    var typeName = Instances.TypeName.GetTypeNameStemFromInterfaceName(interfaceTypeName);
+                    var namespacedTypeName = Instances.NamespacedTypeName.GetNamespacedName(
+                        namespaceName,
+                        typeName);
+
+                    var relativeNamespaceName = Instances.NamespacedTypeName.GetRelativeNamespacedTypeName(
+                        namespacedTypeName,
+                        namespaceName);
+
+                    var initializationExpression = $"{relativeNamespaceName}.{Instances.PropertyName.Instance()}";
+
+                    var propertyName = typeName;
+
+                    return (interfaceTypeName, propertyName, initializationExpression);
+                })
+                .Now();
+
             var output = _.InNewNamespace(
                 namespaceName,
                 (xNamespace, xNamespaceNames) =>
                 {
                     // System namespace already added.
+                    xNamespaceNames.AddRange(extensionMethodBaseNamespaceNames);
 
-                    var instancesClass = Instances.ClassGenerator.CreateInstances();
+                    var instancesClass = Instances.ClassGenerator.CreateInstances(instanceTuples);
 
                     var outputNamespace = xNamespace.AddClass(instancesClass);
                     return outputNamespace;
@@ -66,10 +103,34 @@ namespace System
                         namespaceNameValues.System_Threading(),
                         namespaceNameValues.System_Threading_Tasks(),
                         namespaceNameValues.Microsoft_Extensions_Hosting(),
+                        namespaceNameValues.R5T_D0088(),
+                        namespaceNameValues.R5T_D0090());
+
+                    var programAsAServiceClass = Instances.ClassGenerator.GetProgramAsAServiceProgram();
+
+                    var outputNamespace = xNamespace.AddClass(programAsAServiceClass);
+                    return outputNamespace;
+                });
+
+            return output;
+        }
+
+        public static CompilationUnitSyntax GetProgramAsAServiceProgram_Old(this ICompilationUnitGenerator _,
+            string namespaceName)
+        {
+            var output = _.InNewNamespace(
+                namespaceName,
+                (xNamespace, xNamespaceNames) =>
+                {
+                    var namespaceNameValues = Instances.NamespaceName.Values();
+                    xNamespaceNames.AddRange(
+                        namespaceNameValues.System_Threading(),
+                        namespaceNameValues.System_Threading_Tasks(),
+                        namespaceNameValues.Microsoft_Extensions_Hosting(),
                         namespaceNameValues.R5T_Plymouth(),
                         namespaceNameValues.R5T_Plymouth_ProgramAsAService());
 
-                    var programAsAServiceClass = Instances.ClassGenerator.GetProgramAsAServiceProgram();
+                    var programAsAServiceClass = Instances.ClassGenerator.GetProgramAsAServiceProgram_Old();
 
                     var outputNamespace = xNamespace.AddClass(programAsAServiceClass);
                     return outputNamespace;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 using R5T.T0045;
 
@@ -9,6 +10,18 @@ namespace System
 {
     public static class ICodeFileGeneratorExtensions
     {
+        public static void CreateInstances(this ICodeFileGenerator _,
+            string filePath,
+            string namespaceName,
+            IEnumerable<string> extensionMethodBaseInterfaceNamespacedTypeNames = default)
+        {
+            var instancesCompilationUnit = Instances.CompilationUnitGenerator.CreateInstances(
+                namespaceName,
+                extensionMethodBaseInterfaceNamespacedTypeNames);
+
+            instancesCompilationUnit.WriteTo(filePath);
+        }
+
         public static void CreateT0027_T009Startup(this ICodeFileGenerator _,
             string filePath,
             string namespaceName)
@@ -23,6 +36,15 @@ namespace System
             string namespaceName)
         {
             var programAsAServiceCompilationUnit = Instances.CompilationUnitGenerator.GetProgramAsAServiceProgram(namespaceName);
+
+            programAsAServiceCompilationUnit.WriteTo(filePath);
+        }
+
+        public static void CreateProgramAsAService_Old(this ICodeFileGenerator _,
+            string filePath,
+            string namespaceName)
+        {
+            var programAsAServiceCompilationUnit = Instances.CompilationUnitGenerator.GetProgramAsAServiceProgram_Old(namespaceName);
 
             programAsAServiceCompilationUnit.WriteTo(filePath);
         }
