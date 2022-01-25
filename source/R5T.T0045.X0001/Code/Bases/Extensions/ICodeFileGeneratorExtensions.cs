@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 using R5T.T0045;
 
@@ -19,7 +20,7 @@ namespace System
                 namespaceName,
                 extensionMethodBaseInterfaceNamespacedTypeNames);
 
-            instancesCompilationUnit.WriteTo(filePath);
+            instancesCompilationUnit.WriteToSynchronous(filePath);
         }
 
         public static void CreateT0027_T009Startup(this ICodeFileGenerator _,
@@ -28,16 +29,20 @@ namespace System
         {
             var startupCompilationUnit = Instances.CompilationUnitGenerator.GetT0027_T009Startup(namespaceName);
 
-            startupCompilationUnit.WriteTo(filePath);
+            startupCompilationUnit.WriteToSynchronous(filePath);
         }
 
-        public static void CreateProgramAsAService(this ICodeFileGenerator _,
+        public static async Task CreateProgramAsAService(this ICodeFileGenerator _,
             string filePath,
             string namespaceName)
         {
-            var programAsAServiceCompilationUnit = Instances.CompilationUnitGenerator.GetProgramAsAServiceProgram(namespaceName);
+            var programCompilationUnit = Instances.CompilationUnitGenerator.NewCompilationUnit();
 
-            programAsAServiceCompilationUnit.WriteTo(filePath);
+            programCompilationUnit = await Instances.CompilationUnitOperator.ModifyProgramAsAService_Initial(programCompilationUnit, namespaceName);
+            programCompilationUnit = await Instances.CompilationUnitOperator.ModifyProgramAsAService_AddSerializeConfigurationAudit(programCompilationUnit);
+            programCompilationUnit = await Instances.CompilationUnitOperator.ModifyProgramAsAService_AddSerializeServiceCollectionAudit(programCompilationUnit);
+
+            await programCompilationUnit.WriteTo(filePath);
         }
 
         public static void CreateProgramAsAService_Old(this ICodeFileGenerator _,
@@ -46,7 +51,7 @@ namespace System
         {
             var programAsAServiceCompilationUnit = Instances.CompilationUnitGenerator.GetProgramAsAServiceProgram_Old(namespaceName);
 
-            programAsAServiceCompilationUnit.WriteTo(filePath);
+            programAsAServiceCompilationUnit.WriteToSynchronous(filePath);
         }
 
         public static void CreateDocumentation(this ICodeFileGenerator _,
@@ -58,7 +63,7 @@ namespace System
                 namespaceName,
                 documentationLine);
 
-            documentationCompilationUnit.WriteTo(filePath);
+            documentationCompilationUnit.WriteToSynchronous(filePath);
         }
 
         public static void CreateServiceDefinition(this ICodeFileGenerator _,
@@ -70,7 +75,7 @@ namespace System
                 serviceDefinitionNamespaceName,
                 serviceDefinitionInterfaceTypeName);
 
-            serviceDefinitionInterfaceCompilationUnit.WriteTo(filePath);
+            serviceDefinitionInterfaceCompilationUnit.WriteToSynchronous(filePath);
         }
 
         public static void CreateServiceDefinition(this ICodeFileGenerator _,
@@ -95,7 +100,7 @@ namespace System
                 serviceImplementationNamespacedTypeName,
                 serviceDefinitionNamespacedTypeName);
 
-            serviceDefinitionInterfaceCompilationUnit.WriteTo(filePath);
+            serviceDefinitionInterfaceCompilationUnit.WriteToSynchronous(filePath);
         }
 
         public static void CreateIServiceAggregationStub(this ICodeFileGenerator _,
@@ -107,7 +112,7 @@ namespace System
                 namespaceName,
                 iServiceAggregationIncrementInterfaceNamespacedTypeName);
 
-            iServiceAggregationStubCompilationUnit.WriteTo(filePath);
+            iServiceAggregationStubCompilationUnit.WriteToSynchronous(filePath);
         }
 
         public static void CreateIServiceAggregationStub(this ICodeFileGenerator _,
@@ -129,7 +134,7 @@ namespace System
             var iServiceAggregationIncrementStubCompilationUnit = Instances.CompilationUnitGenerator.GetIServiceAggregationIncrementStub(
                 namespaceName);
 
-            iServiceAggregationIncrementStubCompilationUnit.WriteTo(filePath);
+            iServiceAggregationIncrementStubCompilationUnit.WriteToSynchronous(filePath);
         }
 
         public static void CreateIServiceCollectionExtensionsStub(this ICodeFileGenerator _,
@@ -139,7 +144,7 @@ namespace System
             var iServiceCollectionExtensionsCompilationUnit = Instances.CompilationUnitGenerator.GetIServiceCollectionExtensionsStub(
                 serviceImplementationsNamespaceName);
 
-            iServiceCollectionExtensionsCompilationUnit.WriteTo(filePath);
+            iServiceCollectionExtensionsCompilationUnit.WriteToSynchronous(filePath);
         }
 
         public static void CreateExtensionMethodBaseInterface(this ICodeFileGenerator _,
@@ -149,7 +154,7 @@ namespace System
             var baseExtensionMethodBaseCompilationUnit = Instances.CompilationUnitGenerator.GetExtensionMethodBaseInterface(
                 extensionMethodBaseInterfaceNamespacedTypeName);
 
-            baseExtensionMethodBaseCompilationUnit.WriteTo(filePath);
+            baseExtensionMethodBaseCompilationUnit.WriteToSynchronous(filePath);
         }
 
         public static void CreateIServiceAggregationExtensionsClassStub(this ICodeFileGenerator _,
@@ -159,7 +164,7 @@ namespace System
             var iServiceAggregationExtensionsStubCompilationUnit = Instances.CompilationUnitGenerator.GetIServiceAggregationExtensionsStub(
                 iServiceAggregationInterfaceNamespacedTypeName);
 
-            iServiceAggregationExtensionsStubCompilationUnit.WriteTo(filePath);
+            iServiceAggregationExtensionsStubCompilationUnit.WriteToSynchronous(filePath);
         }
 
         public static void CreateIServiceAggregationIncrementExtensionsClassStub(this ICodeFileGenerator _,
@@ -169,7 +174,7 @@ namespace System
             var iServiceAggregationIncrementExtensionsStubCompilationUnit = Instances.CompilationUnitGenerator.GetIServiceAggregationIncrementExtensionsStub(
                 iServiceAggregationIncrementInterfaceNamespacedTypeName);
 
-            iServiceAggregationIncrementExtensionsStubCompilationUnit.WriteTo(filePath);
+            iServiceAggregationIncrementExtensionsStubCompilationUnit.WriteToSynchronous(filePath);
         }
 
         public static void CreateServiceAggregationClassStub(this ICodeFileGenerator _,
@@ -181,7 +186,7 @@ namespace System
                 namespaceName,
                 iServiceAggregationInterfaceNamespacedTypeName);
 
-            serviceAggregationClassCompilationUnit.WriteTo(filePath);
+            serviceAggregationClassCompilationUnit.WriteToSynchronous(filePath);
         }
 
         public static void CreateServiceAggregationClassStub(this ICodeFileGenerator _,
@@ -205,7 +210,7 @@ namespace System
                 extensionMethodBaseClassNamespacedTypeName,
                 extensionMethodBaseInterfaceNamespacedTypeName);
 
-            baseExtensionMethodBaseCompilationUnit.WriteTo(filePath);
+            baseExtensionMethodBaseCompilationUnit.WriteToSynchronous(filePath);
         }
     }
 }

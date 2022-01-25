@@ -22,10 +22,7 @@ public static T FillFrom<T>(this T aggregation,
 
 }}
 ";
-            var output = _.GetMethodDeclarationFromText(text)
-                .IndentBlock(Instances.Indentation.Method())
-                ;
-
+            var output = _.GetMethodDeclarationFromText(text);
             return output;
         }
 
@@ -55,10 +52,7 @@ protected override async Task ConfigureServicesWithProvidedServices(
 }
 ";
 
-            var output = _.GetMethodDeclarationFromText(text)
-                .IndentBlock(Instances.Indentation.Method())
-                ;
-
+            var output = _.GetMethodDeclarationFromText(text);
             return output;
         }
 
@@ -72,10 +66,7 @@ public override async Task ConfigureConfiguration(
     
 }
 ";
-            var output = _.GetMethodDeclarationFromText(text)
-                .IndentBlock(Instances.Indentation.Method())
-                ;
-
+            var output = _.GetMethodDeclarationFromText(text);
             return output;
         }
 
@@ -88,10 +79,7 @@ public Startup(ILogger<Startup> logger)
 
 }
 ";
-            var output = _.GetConstructorDeclarationFromText(text)
-                .IndentBlock(Instances.Indentation.Method())
-                ;
-
+            var output = _.GetConstructorDeclarationFromTextWithIndentation(text);
             return output;
         }
 
@@ -103,10 +91,7 @@ private async Task RunMethod()
 
 }
 ";
-            var output = _.GetMethodDeclarationFromText(text)
-                .IndentBlock(Instances.Indentation.Method())
-                ;
-
+            var output = _.GetMethodDeclarationFromText(text);
             return output;
         }
 
@@ -118,10 +103,7 @@ private async Task RunOperation()
 
 }
 ";
-            var output = _.GetMethodDeclarationFromText(text)
-                .IndentBlock(Instances.Indentation.Method())
-                ;
-
+            var output = _.GetMethodDeclarationFromText(text);
             return output;
         }
 
@@ -133,10 +115,7 @@ protected override Task ServiceMain(CancellationToken stoppingToken)
     return this.RunOperation();
 }
 ";
-            var output = _.GetMethodDeclarationFromText(text)
-                .IndentBlock(Instances.Indentation.Method())
-                ;
-
+            var output = _.GetMethodDeclarationFromText(text);
             return output;
         }
 
@@ -148,10 +127,7 @@ public Program(IServiceProvider serviceProvider)
 {
 }
 ";
-            var output = _.GetConstructorDeclarationFromText(text)
-                .IndentBlock(Instances.Indentation.Method())
-                ;
-
+            var output = _.GetConstructorDeclarationFromTextWithIndentation(text);
             return output;
         }
 
@@ -165,10 +141,7 @@ public Program(IApplicationLifetime applicationLifetime,
     this.ServiceProvider = serviceProvider;
 }
 ";
-            var output = _.GetConstructorDeclarationFromText(text)
-                .IndentBlock(Instances.Indentation.Method())
-                ;
-
+            var output = _.GetConstructorDeclarationFromTextWithIndentation(text);
             return output;
         }
 
@@ -185,34 +158,30 @@ static Task Main()
         .Run();
 }
 ";
-            var output = _.GetMethodDeclarationFromText(text)
-                .IndentBlock(Instances.Indentation.Method())
-                ;
-
+            var output = _.GetMethodDeclarationFromText(text);
             return output;
         }
 
-        public static MethodDeclarationSyntax GetProgramAsAServiceMain(this IMethodGenerator _)
+        public static MethodDeclarationSyntax GetProgramAsAServiceMain(this IMethodGenerator _,
+            string namespaceName)
         {
-            var text = @"
-static Task Main()
-{
+            var iHostBuilderNamespacedTypeName = Instances.NamespacedTypeName.IHostBuilder_ExtensionMethodBase();
+            var iHostBuilderRelativeNamespacedTypeName = Instances.NamespacedTypeName.GetRelativeNamespacedTypeName(iHostBuilderNamespacedTypeName, namespaceName);
+
+            var text = $@"
+static async Task Main()
+{{
     //OverridableProcessStartTimeProvider.Override(""20211214 - 163052"");
     //OverridableProcessStartTimeProvider.DoNotOverride();
 
     await Instances.Host.NewBuilder()
-        .UseProgramAsAService<Program, T0075.IHostBuilder>()
-        .UseHostStartup<HostStartup, T0075.IHostBuilder>(Instances.ServiceAction.AddHostStartupAction())
+        .UseProgramAsAService<Program, {iHostBuilderRelativeNamespacedTypeName}>()
+        .UseHostStartup<HostStartup, {iHostBuilderRelativeNamespacedTypeName}>(Instances.ServiceAction.AddHostStartupAction())
         .Build()
-        .SerializeConfigurationAudit()
-        .SerializeServiceCollectionAudit()
         .RunAsync();
-}
+}}
 ";
-            var output = _.GetMethodDeclarationFromText(text)
-                .IndentBlock(Instances.Indentation.Method())
-                ;
-
+            var output = _.GetMethodDeclarationFromText(text);
             return output;
         }
     }

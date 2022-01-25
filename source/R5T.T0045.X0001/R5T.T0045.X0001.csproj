@@ -13,6 +13,7 @@
     <ProjectReference Include="..\..\..\R5T.T0040.X0001\source\R5T.T0040.X0001\R5T.T0040.X0001.csproj" />
     <ProjectReference Include="..\..\..\R5T.T0044\source\R5T.T0044.X001\R5T.T0044.X001.csproj" />
     <ProjectReference Include="..\..\..\R5T.T0045\source\R5T.T0045.X001\R5T.T0045.X001.csproj" />
+    <ProjectReference Include="..\..\..\R5T.T0045\source\R5T.T0045.X002\R5T.T0045.X002.csproj" />
     <ProjectReference Include="..\..\..\R5T.T0045\source\R5T.T0045\R5T.T0045.csproj" />
   </ItemGroup>
 </Project>

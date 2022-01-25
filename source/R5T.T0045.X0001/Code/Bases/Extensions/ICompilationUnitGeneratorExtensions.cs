@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -31,22 +32,22 @@ namespace System
             var instanceTuples = distinctExtensionMethodBaseInterfaceNamespacedTypeNames
                 .Select(x =>
                 {
-                    var namespaceName = Instances.NamespacedTypeName.GetNamespaceName(x);
-                    var interfaceTypeName = Instances.NamespacedTypeName.GetTypeName(x);
-                    var typeName = Instances.TypeName.GetTypeNameStemFromInterfaceName(interfaceTypeName);
-                    var namespacedTypeName = Instances.NamespacedTypeName.GetNamespacedName(
-                        namespaceName,
-                        typeName);
+                    var embNamespaceName = Instances.NamespacedTypeName.GetNamespaceName(x);
+                    var embInterfaceTypeName = Instances.NamespacedTypeName.GetTypeName(x);
+                    var embTypeName = Instances.TypeName.GetTypeNameStemFromInterfaceName(embInterfaceTypeName);
+                    var embNamespacedTypeName = Instances.NamespacedTypeName.GetNamespacedName(
+                        embNamespaceName,
+                        embTypeName);
 
-                    var relativeNamespaceName = Instances.NamespacedTypeName.GetRelativeNamespacedTypeName(
-                        namespacedTypeName,
+                    var embTypeRelativeNamespacedTypeName = Instances.NamespacedTypeName.GetRelativeNamespacedTypeName(
+                        embNamespacedTypeName,
                         namespaceName);
 
-                    var initializationExpression = $"{relativeNamespaceName}.{Instances.PropertyName.Instance()}";
+                    var initializationExpression = $"{embTypeRelativeNamespacedTypeName}.{Instances.PropertyName.Instance()}";
 
-                    var propertyName = typeName;
+                    var propertyName = embTypeName;
 
-                    return (interfaceTypeName, propertyName, initializationExpression);
+                    return (embInterfaceTypeName, propertyName, initializationExpression);
                 })
                 .Now();
 
@@ -85,30 +86,6 @@ namespace System
                     var startupClass = Instances.ClassGenerator.GetT0027_T009Startup(namespaceName);
 
                     var outputNamespace = xNamespace.AddClass(startupClass);
-                    return outputNamespace;
-                });
-
-            return output;
-        }
-
-        public static CompilationUnitSyntax GetProgramAsAServiceProgram(this ICompilationUnitGenerator _,
-            string namespaceName)
-        {
-            var output = _.InNewNamespace(
-                namespaceName,
-                (xNamespace, xNamespaceNames) =>
-                {
-                    var namespaceNameValues = Instances.NamespaceName.Values();
-                    xNamespaceNames.AddRange(
-                        namespaceNameValues.System_Threading(),
-                        namespaceNameValues.System_Threading_Tasks(),
-                        namespaceNameValues.Microsoft_Extensions_Hosting(),
-                        namespaceNameValues.R5T_D0088(),
-                        namespaceNameValues.R5T_D0090());
-
-                    var programAsAServiceClass = Instances.ClassGenerator.GetProgramAsAServiceProgram();
-
-                    var outputNamespace = xNamespace.AddClass(programAsAServiceClass);
                     return outputNamespace;
                 });
 

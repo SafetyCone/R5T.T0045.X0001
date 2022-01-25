@@ -23,7 +23,8 @@ namespace System
                     .Select(xTuple => Instances.PropertyGenerator.GetInstancesInstanceProperty(
                         xTuple.ExtensionMethodBaseInterfaceTypeName,
                         xTuple.PropertyName,
-                        xTuple.InitializationExpression))
+                        xTuple.InitializationExpression)
+                        .Indent(Instances.Indentation.Property()))
                     .Now()
                 : Array.Empty<PropertyDeclarationSyntax>()
                 ;
@@ -73,36 +74,26 @@ namespace System
             return output;
         }
 
-        public static ClassDeclarationSyntax GetProgramAsAServiceProgram(this IClassGenerator _)
+        public static ClassDeclarationSyntax GetProgramAsAServiceProgram(this IClassGenerator _,
+            string namespaceName)
         {
-            var mainMethodInMainRegion = Instances.MethodGenerator.GetProgramAsAServiceMain()
+            var mainMethodInMainRegion = Instances.MethodGenerator.GetProgramAsAServiceMain(
+                namespaceName)
                 .WrapWithRegion(
                     Instances.RegionName.Static(),
                     Instances.Indentation.Method())
                 ;
 
-            var constructor = Instances.MethodGenerator.GetProgramAsAServiceProgramConstructor()
-                .Indent(Instances.Indentation.Method())
-                .Indent(Instances.Indentation.Method())
-                ;
-
-            var serviceMain = Instances.MethodGenerator.GetProgramAsAServiceServiceMain()
-                .Indent(Instances.Indentation.Method())
-                ;
-
-            var runOperation = Instances.MethodGenerator.GetProgramAsAServiceRunOperationMethod()
-                .Indent(Instances.Indentation.Method())
-                ;
-
-            var runMethod = Instances.MethodGenerator.GetProgramAsAServiceRunMethodMethod()
-                .Indent(Instances.Indentation.Method())
-                ;
+            var constructor = Instances.MethodGenerator.GetProgramAsAServiceProgramConstructor();
+            var runMethod = Instances.MethodGenerator.GetProgramAsAServiceRunMethodMethod();
+            var runOperation = Instances.MethodGenerator.GetProgramAsAServiceRunOperationMethod();
+            var serviceMain = Instances.MethodGenerator.GetProgramAsAServiceServiceMain();
 
             var output = _.GetPrivateClass(
                 Instances.ClassName.Program(),
                 Instances.TypeName.ProgramAsAServiceBase())
                 .AddMethod(mainMethodInMainRegion)
-                .AddMembers(
+                .AddMethods(
                     constructor,
                     serviceMain,
                     runOperation,
