@@ -20,15 +20,6 @@ namespace System
             return output;
         }
 
-        public static PropertyDeclarationSyntax GetInstancesInstanceProperty(this IPropertyGenerator _,
-            string typeName,
-            string propertyName,
-            string initializationExpression)
-        {
-            var output = _.GetStaticPropertyInitialized(typeName, propertyName, initializationExpression);
-            return output;
-        }
-
         public static PropertyDeclarationSyntax GetPrivateServiceProvider(this IPropertyGenerator _)
         {
             var text = $"private IServiceProvider ServiceProvider {{ get; }}";

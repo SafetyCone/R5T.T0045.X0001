@@ -11,18 +11,6 @@ namespace System
 {
     public static class ICodeFileGeneratorExtensions
     {
-        public static void CreateInstances(this ICodeFileGenerator _,
-            string filePath,
-            string namespaceName,
-            IEnumerable<string> extensionMethodBaseInterfaceNamespacedTypeNames = default)
-        {
-            var instancesCompilationUnit = Instances.CompilationUnitGenerator.CreateInstances(
-                namespaceName,
-                extensionMethodBaseInterfaceNamespacedTypeNames);
-
-            instancesCompilationUnit.WriteToSynchronous(filePath);
-        }
-
         public static void CreateT0027_T009Startup(this ICodeFileGenerator _,
             string filePath,
             string namespaceName)
