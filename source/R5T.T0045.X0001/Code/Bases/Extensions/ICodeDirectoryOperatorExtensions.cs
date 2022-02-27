@@ -81,7 +81,7 @@ namespace System
         public static string[] GetBasesIntefacesDirectoryFilePaths(this ICodeDirectoryOperator _,
             string projectDirectoryPath)
         {
-            var projectBasesIntefacesDirectoryPath = Instances.ProjectPathsOperator.GetBasesInterfacesDirectoryPath(projectDirectoryPath);
+            var projectBasesIntefacesDirectoryPath = Instances.ProjectPathsOperator.GetBasesInterfacesDirectoryPathFromProjectDirectoryPath(projectDirectoryPath);
 
             var basesInterfacesDirectoryFilePaths = Instances.FileSystemOperator.EnumerateAllDescendentFilePathsOrEmptyIfNotExists(projectBasesIntefacesDirectoryPath);
 
