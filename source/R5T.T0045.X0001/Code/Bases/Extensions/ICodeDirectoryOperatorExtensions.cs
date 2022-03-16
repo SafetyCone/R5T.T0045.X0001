@@ -30,7 +30,7 @@ namespace System
         public static string[] GetServiceDefinitionDirectoryFilePaths(this ICodeDirectoryOperator _,
             string projectDirectoryPath)
         {
-            var projectServiceDefinitionsDirectoryPath = Instances.ProjectPathsOperator.GetServiceDefinitionsDirectoryPath(projectDirectoryPath);
+            var projectServiceDefinitionsDirectoryPath = Instances.ProjectPathsOperator.GetServicesDefinitionsDirectoryPath(projectDirectoryPath);
 
             var serviceDefinitionDirectoryFilePaths = Instances.FileSystemOperator.EnumerateAllDescendentFilePathsOrEmptyIfNotExists(projectServiceDefinitionsDirectoryPath);
 
