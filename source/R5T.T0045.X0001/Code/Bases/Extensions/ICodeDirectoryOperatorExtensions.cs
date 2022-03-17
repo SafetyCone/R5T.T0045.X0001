@@ -13,7 +13,7 @@ namespace System
         public static string[] GetServiceClassesDirectoryFilePaths(this ICodeDirectoryOperator _,
             string projectDirectoryPath)
         {
-            var projectServiceClassesDirectoryPath = Instances.ProjectPathsOperator.GetServiceClassesDirectoryPath(projectDirectoryPath);
+            var projectServiceClassesDirectoryPath = Instances.ProjectPathsOperator.GetServicesClassesDirectoryPath(projectDirectoryPath);
 
             var serviceClassesDirectoryFilePaths = Instances.FileSystemOperator.EnumerateAllDescendentFilePathsOrEmptyIfNotExists(projectServiceClassesDirectoryPath);
 
@@ -47,7 +47,7 @@ namespace System
         public static string[] GetServiceImplementationDirectoryFilePaths(this ICodeDirectoryOperator _,
             string projectDirectoryPath)
         {
-            var projectSerivceImplementationDirectoryPath = Instances.ProjectPathsOperator.GetServiceImplementationsDirectoryPath(projectDirectoryPath);
+            var projectSerivceImplementationDirectoryPath = Instances.ProjectPathsOperator.GetServicesImplementationsDirectoryPath(projectDirectoryPath);
 
             var serviceImplementationDirectoryFilePaths = Instances.FileSystemOperator.EnumerateAllDescendentFilePathsOrEmptyIfNotExists(projectSerivceImplementationDirectoryPath);
 
