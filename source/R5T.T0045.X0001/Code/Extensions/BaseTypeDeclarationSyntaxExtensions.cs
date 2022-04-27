@@ -17,7 +17,7 @@ namespace System
         {
             var output = baseType.AddAttributeLists(Instances.SyntaxFactory.AttributeList()
                     .AddAttributes(Instances.SyntaxFactory.Attribute(attributeName))
-                    .Indent(Instances.Indentation.TypeAttribute()))
+                    .IndentStartLine(Instances.Indentation.TypeAttribute()))
                 as T;
 
             return output;

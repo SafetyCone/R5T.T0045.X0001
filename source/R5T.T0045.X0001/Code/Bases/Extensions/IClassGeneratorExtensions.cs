@@ -20,11 +20,11 @@ namespace System
             var constructor = Instances.MethodGenerator.GetT0027_T009StartupConstructor();
 
             var configureConfiguration = Instances.MethodGenerator.GetT0027_T009ConfigureConfiguration()
-                .Indent(Instances.Indentation.Method())
+                .IndentStartLine(Instances.Indentation.Method())
                 ;
 
             var configureServices = Instances.MethodGenerator.GetT0027_T009ConfigureServicesWithProvidedServices()
-                .Indent(Instances.Indentation.Method())
+                .IndentStartLine(Instances.Indentation.Method())
                 ;
 
             var baseStartupNamespacedTypeName = Instances.NamespacedTypeName.Startup_R5T_T0027_T009();
@@ -90,26 +90,26 @@ namespace System
                 ;
 
             var serviceProviderProperty = Instances.PropertyGenerator.GetPrivateServiceProvider()
-                .Indent(Instances.Indentation.Property())
-                .Indent(Instances.Indentation.Property())
-                .Indent(Instances.Indentation.Property())
+                .IndentStartLine(Instances.Indentation.Property())
+                .IndentStartLine(Instances.Indentation.Property())
+                .IndentStartLine(Instances.Indentation.Property())
                 ;
 
             var constructor = Instances.MethodGenerator.GetProgramAsAServiceProgramConstructor_Old()
-                .Indent(Instances.Indentation.Method())
-                .Indent(Instances.Indentation.Method())
+                .IndentStartLine(Instances.Indentation.Method())
+                .IndentStartLine(Instances.Indentation.Method())
                 ;
 
             var serviceMain = Instances.MethodGenerator.GetProgramAsAServiceServiceMain()
-                .Indent(Instances.Indentation.Method())
+                .IndentStartLine(Instances.Indentation.Method())
                 ;
 
             var runOperation = Instances.MethodGenerator.GetProgramAsAServiceRunOperationMethod()
-                .Indent(Instances.Indentation.Method())
+                .IndentStartLine(Instances.Indentation.Method())
                 ;
 
             var runMethod = Instances.MethodGenerator.GetProgramAsAServiceRunMethodMethod()
-                .Indent(Instances.Indentation.Method())
+                .IndentStartLine(Instances.Indentation.Method())
                 ;
 
             var output = _.GetPrivateClass(
@@ -171,7 +171,7 @@ namespace System
             var propertyIndentation = Instances.Indentation.Property();
 
             var instanceStaticProperty = Instances.PropertyGenerator.GetExtensionMethodBaseStaticInstance(extensionMethodBaseClassTypeName)
-                .Indent(propertyIndentation)
+                .IndentStartLine(propertyIndentation)
                 .WrapWithRegion(Instances.RegionName.Static(), propertyIndentation)
                 ;
 

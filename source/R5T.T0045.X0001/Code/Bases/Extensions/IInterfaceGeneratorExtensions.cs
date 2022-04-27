@@ -33,7 +33,7 @@ public interface {Instances.InterfaceName.IServiceAggregation()} :
 ";
 
             var output = _.GetInterfaceFromTextWithNewLineIndentationOnly(text)
-                .IndentBlock(Instances.Indentation.Interface())
+                .IndentBlock_Old(Instances.Indentation.Interface())
                 ;
 
             return output;
