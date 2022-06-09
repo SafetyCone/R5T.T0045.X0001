@@ -13,10 +13,12 @@ namespace System
     {
         public static T AddAttributeByAttributeName<T>(this T baseType,
             string attributeName)
-            where T : BaseTypeDeclarationSyntax
+            where T : MemberDeclarationSyntax
         {
+            var nonSuffixedAttributeName = Instances.AttributeTypeName.GetEnsuredNonAttributeSuffixedTypeName(attributeName);
+
             var output = baseType.AddAttributeLists(Instances.SyntaxFactory.AttributeList()
-                    .AddAttributes(Instances.SyntaxFactory.Attribute(attributeName))
+                    .AddAttributes(Instances.SyntaxFactory.Attribute(nonSuffixedAttributeName))
                     .IndentStartLine(Instances.Indentation.TypeAttribute()))
                 as T;
 
@@ -26,7 +28,7 @@ namespace System
         public static T AddAttributeByAttributeNamespacedTypeName<T>(this T baseType,
             string attributeNamespacedTypeName,
             NamespaceNameSet namespaceNames)
-            where T : BaseTypeDeclarationSyntax
+            where T : MemberDeclarationSyntax
         {
             var attributeNamespaceName = Instances.NamespacedTypeName.GetNamespaceName(attributeNamespacedTypeName);
 
@@ -43,7 +45,7 @@ namespace System
         public static T AddAttribute<T>(this T baseType,
             string attributeNamespacedTypeName,
             NamespaceNameSet namespaceNames)
-            where T : BaseTypeDeclarationSyntax
+            where T : MemberDeclarationSyntax
         {
             var output = baseType.AddAttributeByAttributeNamespacedTypeName(
                 attributeNamespacedTypeName,
@@ -62,33 +64,30 @@ namespace System
             return output;
         }
 
-        public static T AddExtensionMethodBaseMarkerAttribute<T>(this T baseType,
+        public static InterfaceDeclarationSyntax AddExtensionMethodBaseMarkerAttribute(this InterfaceDeclarationSyntax @interface,
             NamespaceNameSet namespaceNames)
-            where T : BaseTypeDeclarationSyntax
         {
-            var output = baseType.AddAttribute(
+            var output = @interface.AddAttribute(
                 Instances.NamespacedTypeName.ExtensionMethodBaseMarkerAttribute(),
                 namespaceNames);
 
             return output;
         }
 
-        public static T AddServiceDefinitionMarkerAttribute<T>(this T baseType,
+        public static InterfaceDeclarationSyntax AddServiceDefinitionMarkerAttribute(this InterfaceDeclarationSyntax @interface,
             NamespaceNameSet namespaceNames)
-            where T : BaseTypeDeclarationSyntax
         {
-            var output = baseType.AddAttribute(
+            var output = @interface.AddAttribute(
                 Instances.NamespacedTypeName.ServiceDefinitionMarkerAttribute(),
                 namespaceNames);
 
             return output;
         }
 
-        public static T AddServiceImplementationMarkerAttribute<T>(this T baseType,
+        public static ClassDeclarationSyntax AddServiceImplementationMarkerAttribute(this ClassDeclarationSyntax @class,
             NamespaceNameSet namespaceNames)
-            where T : BaseTypeDeclarationSyntax
         {
-            var output = baseType.AddAttribute(
+            var output = @class.AddAttribute(
                 Instances.NamespacedTypeName.ServiceImplementationMarkerAttribute(),
                 namespaceNames);
 
